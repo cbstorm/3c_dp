@@ -13,11 +13,17 @@ rotate:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "transpose=1" ./videos/$(FNAME)_r.mp4
 extract:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "fps=1" -q:v 1 ./images/$(FNAME)_%06d.jpg
+filter:
+	python3 filter.py
 clean:
 	rm -rf images/*
 	rm -rf tmp/*
 	rm -rf videos/*
 	rm -rf runs
+	rm -rf __dataset
+	rm -rf datasets
+	rm -rf runs
+	rm yolo*
 s_view:
 	python3 v_view.py "srt://34.142.173.129:6000?streamid=/live/STR66FB56CF1?key=xExJSJGVcyBahJnQf7rlYwGhwiQ5m-"
 pred:
@@ -28,5 +34,11 @@ deps:
 	pip3 freeze > requirements.txt
 install:
 	pip3 install -r requirements.txt
+train:
+	python3 train.py
+mvmodel:
+	mkdir -p models/$(shell date +%s)
+	cp runs/detect/train/weights/best.pt models/$(shell date +%s)/best.pt
+	cp runs/detect/train/results.csv models/$(shell date +%s)/
 	
 

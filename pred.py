@@ -5,8 +5,16 @@ import time
 from lib import lstasks, file, lbstudio
 
 
+def _getModel():
+    d = os.listdir("models")
+    model_path = 'models/{}/best.pt'.format(d[0])
+    print("model_path: ", model_path)
+    model = YOLO(model_path)
+    return model
+
+
 def Pred():
-    model = YOLO("./models/best.pt")
+    model = _getModel()
     tasks = lstasks.GetListNewTasks()
     for i, t in enumerate(tasks):
         print(i, t["id"])
