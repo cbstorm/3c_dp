@@ -23,9 +23,10 @@ clean:
 	rm -rf __dataset
 	rm -rf datasets
 	rm -rf runs
-	rm yolo*
+	rm yolo* || true
+	rm -rf 3c.yaml
 s_view:
-	python3 v_view.py "srt://34.142.173.129:6000?streamid=/live/STR66FB56CF1?key=xExJSJGVcyBahJnQf7rlYwGhwiQ5m-"
+	python3 v_view.py $(FNAME)
 pred:
 	python3 pred.py
 lstasks:

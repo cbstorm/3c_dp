@@ -28,11 +28,13 @@ def Pred():
         zipped = list(zip(result.boxes.cls, result.boxes.data))
         sorted_zipped = sorted(zipped, key=lambda x: x[0])
         classes, boxes_data = zip(*sorted_zipped)
+        min_score = 1
         for idx, c in enumerate(classes):
             cls_name = result.names[int(c)]
             xmin, ymin, xmax, ymax, score, cls_idx = boxes_data[idx]
             xmin, ymin, xmax, ymax, score = xmin.item(
             ), ymin.item(), xmax.item(), ymax.item(), score.item()
+            min_score = min(min_score, score)
             pred_obj = {
                 "original_width": origin_w,
                 "original_height": origin_h,
@@ -54,7 +56,7 @@ def Pred():
             pred_objs += [pred_obj]
 
         lbstudio.client.predictions.create(task=t["id"],
-                                           result=pred_objs, score=score,  model_version="yolo-v8")
+                                           result=pred_objs, score=min_score,  model_version="yolo-v8")
         os.remove(img_path)
 
 

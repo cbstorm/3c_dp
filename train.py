@@ -52,4 +52,4 @@ names:
 '''.format(ds='dataset'))
 
 model = YOLO("yolov8n.pt")
-results = model.train(data=CONFIG_FILE, epochs=120, device=0)
+results = model.train(data=CONFIG_FILE, epochs=150, device=0)
