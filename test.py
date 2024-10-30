@@ -1,13 +1,7 @@
-import os
-
-
-def _getModel():
-    d = os.listdir("models")
-    model_path = 'models/{}/best.pt'.format(d[0])
-
 
 def main():
-    _getModel()
+    for i in range(8, 20):
+        print(i)
 
 
 if __name__ == '__main__':

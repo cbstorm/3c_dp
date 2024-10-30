@@ -22,9 +22,9 @@ clean:
 	rm -rf videos/*
 	rm -rf runs
 	rm -rf __dataset
-	rm -rf datasets
+	rm -rf dataset
 	rm -rf runs
-	rm yolo* || true
+	rm -rf yolo* || true
 	rm -rf 3c.yaml
 s_view:
 	python3 v_view.py $(FNAME)
@@ -38,9 +38,16 @@ install:
 	pip3 install -r requirements.txt
 train:
 	python3 train.py
+train_classify:
+	rm -rf dataset || true
+	python3 train_classify.py
 mvmodel:
-	mkdir -p models/$(shell date +%s)
-	cp runs/detect/train/weights/best.pt models/$(shell date +%s)/best.pt
-	cp runs/detect/train/results.csv models/$(shell date +%s)/
+	mkdir -p models/od/$(shell date +%s)
+	cp runs/detect/train/weights/best.pt models/od/$(shell date +%s)/best.pt
+	cp runs/detect/train/results.csv models/od/$(shell date +%s)/
+mvclsmodel:
+	mkdir -p models/cls/$(shell date +%s)
+	cp runs/classify/train/weights/best.pt models/cls/$(shell date +%s)/best.pt
+	cp runs/classify/train/results.csv models/cls/$(shell date +%s)/
 	
 
