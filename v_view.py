@@ -39,7 +39,7 @@ while (True):
         cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), COLORS[label], 1)
 
     cv2.putText(frame, fps, (8, 80), cv2.FONT_HERSHEY_SIMPLEX,
-                2, (100, 255, 0), 2, cv2.LINE_AA)
+                2, (100, 255, 0), 4, cv2.LINE_AA)
     cv2.imshow('frame', frame)
     prev_frame_time = new_frame_time
     if cv2.waitKey(1) & 0xFF == ord('q'):
