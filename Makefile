@@ -9,7 +9,7 @@ crop:
 cut:
 	ffmpeg -ss $(FROM) -to $(TO) -i ./videos/$(FNAME).mp4 -c:v copy ./videos/$(FNAME)_$(FROM)_$(TO).mp4
 view:
-	python3 v_view.py ./videos/$(FNAME).mp4
+	python3 v_view.py videos/$(FNAME).mp4
 rotate:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "transpose=1" ./videos/$(FNAME)_r.mp4
 extract:
@@ -28,6 +28,8 @@ clean:
 	rm -rf 3c.yaml
 s_view:
 	python3 v_view.py $(FNAME)
+view_cls:
+	python3 view_cls.py ./videos/$(FNAME).mp4
 pred:
 	python3 pred.py
 lstasks:
