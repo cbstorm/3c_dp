@@ -13,7 +13,7 @@ view:
 rotate:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "transpose=1" ./videos/$(FNAME)_r.mp4
 extract:
-	ffmpeg -i ./videos/$(FNAME).mp4 -vf "fps=$(FPS)" -q:v 1 ./images/$(FNAME)_%06d.jpg
+	ffmpeg -i ./videos/$(FNAME).mp4 -vf "fps=$(FPS)" -q:v 1 ./images/$(FNAME)_$(shell date +%s)_%06d.jpg
 filter:
 	python3 filter.py
 clean:

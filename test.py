@@ -1,7 +1,8 @@
+import os
+
 
 def main():
-    for i in range(8, 20):
-        print(i)
+    os.system("echo '123'")
 
 
 if __name__ == '__main__':
