@@ -8,3 +8,4 @@ yolo*
 images/*
 videos/*
 __classify_dataset
+tmp

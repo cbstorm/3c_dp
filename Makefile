@@ -51,5 +51,12 @@ mvclsmodel:
 	mkdir -p models/cls/$(shell date +%s)
 	cp runs/classify/train/weights/best.pt models/cls/$(shell date +%s)/best.pt
 	cp runs/classify/train/results.csv models/cls/$(shell date +%s)/
-	
-
+dl_hls:
+	hls_downloader -url=$(U) -path=$(P) -playlist=playlist.m3u8 -start=$(S) -end=$(E) -out=videos/vid_1.ts
+mp4:
+	ffmpeg -i videos/vid_0.ts -acodec copy -vcodec copy videos/vid_0.mp4
+top_log:
+	mkdir -p tmp/vid_0
+	python3 top_log.py videos/$(FNAME).mp4
+concat:
+	ffmpeg -f concat -safe 0 -i $(F) -c copy videos/$(O).mp4
