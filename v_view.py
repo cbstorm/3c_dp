@@ -6,8 +6,8 @@ import os
 
 
 def _getModel():
-    d = os.listdir("models/od")
-    model_path = 'models/od/{}/best.pt'.format(d[0])
+    d = sorted(os.listdir("models/od"))
+    model_path = 'models/od/{}/best.pt'.format(d[-1])
     print("model_path: ", model_path)
     model = YOLO(model_path)
     return model

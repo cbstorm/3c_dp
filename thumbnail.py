@@ -1,7 +1,7 @@
 import cv2
 
 
-vid = cv2.VideoCapture("videos/vid_yt.mp4")
+vid = cv2.VideoCapture("videos/vid_concat.mp4")
 
 while True:
     ret, frame = vid.read()

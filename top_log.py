@@ -3,6 +3,7 @@ import cv2
 from ultralytics import YOLO
 import sys
 import re
+from lib.file import SortedAlphanumeric
 
 
 FNAME = sys.argv[1]
@@ -15,13 +16,6 @@ duration = int(frames / fps)
 print("durations: ", duration)
 
 
-def sorted_alphanumeric(data):
-    def convert(text): return int(text) if text.isdigit() else text.lower()
-    def alphanum_key(key): return [convert(c)
-                                   for c in re.split('([0-9]+)', key)]
-    return sorted(data, key=alphanum_key)
-
-
 def merge():
     os.system(
         "ffmpeg -f concat -safe 0 -i ./tmp/vid_list.txt -c copy ./videos/vid_concat.mp4")
@@ -29,7 +23,7 @@ def merge():
 
 def generate_vid_list_file():
     dir = "./tmp/vid_0"
-    files = sorted_alphanumeric(os.listdir(dir))
+    files = SortedAlphanumeric(os.listdir(dir))
     with open("./tmp/vid_list.txt", "a") as f:
         for fi in files:
             f.write("file '{}'\n".format("./vid_0/{}".format(fi)))
@@ -59,8 +53,8 @@ def max2_idx(xi_1, x_1, xi_2, x_2):
 
 
 def _getModel():
-    d = os.listdir("models/cls")
-    model_path = 'models/cls/{}/best.pt'.format(d[0])
+    d = sorted(os.listdir("models/cls"))
+    model_path = 'models/cls/{}/best.pt'.format(d[-1])
     print("model_path: ", model_path)
     model = YOLO(model_path)
     return model
@@ -75,6 +69,8 @@ def main():
     diff = 0
     while (True):
         t += 1
+        if t % 10 == 0:
+            print(t)
         ret, frame = vid.read()
         if ret == False:
             break

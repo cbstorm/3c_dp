@@ -29,6 +29,8 @@ clean:
 s_view:
 	python3 v_view.py $(FNAME)
 view_cls:
+	mkdir -p images/top
+	mkdir -p images/not_top
 	python3 view_cls.py ./videos/$(FNAME).mp4
 pred:
 	python3 pred.py
@@ -52,11 +54,13 @@ mvclsmodel:
 	cp runs/classify/train/weights/best.pt models/cls/$(shell date +%s)/best.pt
 	cp runs/classify/train/results.csv models/cls/$(shell date +%s)/
 dl_hls:
-	hls_downloader -url=$(U) -path=$(P) -playlist=playlist.m3u8 -start=$(S) -end=$(E) -out=videos/vid_1.ts
+	hls_downloader -url=$(U) -path=$(P) -playlist=playlist.m3u8 -start=$(S) -end=$(E) -out=videos/vid_2.ts
 mp4:
 	ffmpeg -i videos/vid_0.ts -acodec copy -vcodec copy videos/vid_0.mp4
 top_log:
 	mkdir -p tmp/vid_0
 	python3 top_log.py videos/$(FNAME).mp4
 concat:
-	ffmpeg -f concat -safe 0 -i $(F) -c copy videos/$(O).mp4
+	ffmpeg -f concat -safe 0 -i $(F) -map 0 -c copy videos/$(O).mp4
+rename:
+	python3 rename.py $(D)

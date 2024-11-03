@@ -100,4 +100,4 @@ print("Copy data not_top valid done")
 model = YOLO("yolov8n-cls.pt")
 
 # Train the model
-results = model.train(data=DATASET_DIR, epochs=100, device=0)
+results = model.train(data=DATASET_DIR, epochs=200, device=0)
