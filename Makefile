@@ -7,7 +7,7 @@ info:
 crop:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "crop=$(W):$(H):$(X):$(Y)" ./videos/$(FNAME)_c.mp4
 cut:
-	ffmpeg -ss $(FROM) -to $(TO) -i ./videos/$(FNAME).mp4 -c:v copy ./videos/$(FNAME)_$(FROM)_$(TO).mp4
+	ffmpeg -ss $(FROM) -to $(TO) -i ./videos/$(FNAME).mp4 -map 0 -c:v copy ./videos/$(FNAME)_$(FROM)_$(TO).mp4
 view:
 	python3 v_view.py videos/$(FNAME).mp4
 rotate:
@@ -54,9 +54,9 @@ mvclsmodel:
 	cp runs/classify/train/weights/best.pt models/cls/$(shell date +%s)/best.pt
 	cp runs/classify/train/results.csv models/cls/$(shell date +%s)/
 dl_hls:
-	hls_downloader -url=$(U) -path=$(P) -playlist=playlist.m3u8 -start=$(S) -end=$(E) -out=videos/vid_2.ts
+	hls_downloader -url=$(U) -path=$(P) -playlist=playlist.m3u8 -start=$(S) -end=$(E) -out=videos/vid_0.ts
 mp4:
-	ffmpeg -i videos/vid_0.ts -acodec copy -vcodec copy videos/vid_0.mp4
+	ffmpeg -i videos/vid_0.ts -map 0 -acodec copy -vcodec copy videos/vid_0.mp4
 top_log:
 	mkdir -p tmp/vid_0
 	python3 top_log.py videos/$(FNAME).mp4
@@ -64,3 +64,7 @@ concat:
 	ffmpeg -f concat -safe 0 -i $(F) -map 0 -c copy videos/$(O).mp4
 rename:
 	python3 rename.py $(D)
+thumb:
+	python3 thumbnail.py videos/$(FNAME).mp4 $(T)
+move_log:
+	python3 move_log.py videos/$(FNAME).mp4
