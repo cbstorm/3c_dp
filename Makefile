@@ -6,10 +6,10 @@ info:
 	youtubedr info $(URL)
 crop:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "crop=$(W):$(H):$(X):$(Y)" ./videos/$(FNAME)_c.mp4
+crop_score_board:
+	ffmpeg -i ./videos/$(FNAME).mp4 -map 0 -vf "crop=400:165:100:60" ./videos/$(FNAME)_score_board.mp4
 cut:
 	ffmpeg -ss $(FROM) -to $(TO) -i ./videos/$(FNAME).mp4 -map 0 -c:v copy ./videos/$(FNAME)_$(FROM)_$(TO).mp4
-view:
-	python3 v_view.py videos/$(FNAME).mp4
 rotate:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "transpose=1" ./videos/$(FNAME)_r.mp4
 extract:
@@ -26,12 +26,16 @@ clean:
 	rm -rf runs
 	rm -rf yolo* || true
 	rm -rf 3c.yaml
+view:
+	python3 v_view.py videos/$(FNAME).mp4
 s_view:
 	python3 v_view.py $(FNAME)
 view_cls:
 	mkdir -p images/top
 	mkdir -p images/not_top
 	python3 view_cls.py ./videos/$(FNAME).mp4
+n_view:
+	python3 normal_view.py videos/$(FNAME).mp4
 pred:
 	python3 pred.py
 lstasks:
@@ -49,6 +53,10 @@ mvmodel:
 	mkdir -p models/od/$(shell date +%s)
 	cp runs/detect/train/weights/best.pt models/od/$(shell date +%s)/best.pt
 	cp runs/detect/train/results.csv models/od/$(shell date +%s)/
+mvbannermodel:
+	mkdir -p models/banner/$(shell date +%s)
+	cp runs/detect/train/weights/best.pt models/banner/$(shell date +%s)/best.pt
+	cp runs/detect/train/results.csv models/banner/$(shell date +%s)/
 mvclsmodel:
 	mkdir -p models/cls/$(shell date +%s)
 	cp runs/classify/train/weights/best.pt models/cls/$(shell date +%s)/best.pt
@@ -68,3 +76,19 @@ thumb:
 	python3 thumbnail.py videos/$(FNAME).mp4 $(T)
 move_log:
 	python3 move_log.py videos/$(FNAME).mp4
+
+FACTOR = 1
+score_log:
+	python3 score_log.py videos/$(FNAME).mp4 $(FACTOR) > tmp/score_log.txt
+read_score_log:
+	mkdir -p tmp/$(FNAME)
+	python3 read_score_log.py tmp/score_log.txt videos/$(FNAME).mp4
+train_banner:
+	python3 train_banner.py
+banner_view:
+	python3 banner_view.py videos/$(FNAME).mp4
+hide_banner:
+	python3 hide_banner.py videos/$(FNAME).mp4
+simple_hide_banner:
+	# python3 simple_hide_banner.py videos/$(FNAME).mp4
+	ffmpeg -i videos/$(FNAME).mp4 -filter_complex "[0:v]crop=1420:60:520:970,avgblur=20[fg];[0:v][fg]overlay=520:970[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy -movflags +faststart videos/hidden_banner.mp4

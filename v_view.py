@@ -24,6 +24,9 @@ COLORS["red"] = (255, 0, 0)
 
 new_frame_time = 0
 prev_frame_time = 0
+WINDOW_NAME = os.path.basename(VID_PATH)
+# cv2.namedWindow(WINDOW_NAME, cv2.WINDOW_NORMAL)
+cv2.resizeWindow(WINDOW_NAME, 1280, 720)
 while (True):
     ret, frame = cap.read()
     if ret == False:
@@ -40,7 +43,7 @@ while (True):
 
     cv2.putText(frame, fps, (8, 80), cv2.FONT_HERSHEY_SIMPLEX,
                 2, (100, 255, 0), 4, cv2.LINE_AA)
-    cv2.imshow('frame', frame)
+    cv2.imshow(WINDOW_NAME, frame)
     prev_frame_time = new_frame_time
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
