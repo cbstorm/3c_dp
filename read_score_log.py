@@ -47,5 +47,5 @@ for fi in result.split("\n"):
         continue
     vid_list_f.write("file './vid_0/{}'\n".format(fi))
 f.close()
-os.system(
-    "ffmpeg -f concat -safe 0 -i ./tmp/vid_list.txt -c copy ./videos/vid_merge.mp4")
+# os.system(
+#     "ffmpeg -f concat -safe 0 -i tmp/vid_list.txt -c copy videos/vid_merge.mp4")

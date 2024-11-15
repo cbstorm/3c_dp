@@ -6,8 +6,12 @@ info:
 	youtubedr info $(URL)
 crop:
 	ffmpeg -i ./videos/$(FNAME).mp4 -vf "crop=$(W):$(H):$(X):$(Y)" ./videos/$(FNAME)_c.mp4
+W=400
+H=165
+X=100
+Y=60
 crop_score_board:
-	ffmpeg -i ./videos/$(FNAME).mp4 -map 0 -vf "crop=400:165:100:60" ./videos/$(FNAME)_score_board.mp4
+	ffmpeg -i ./videos/$(FNAME).mp4 -map 0 -vf "crop=$(W):$(H):$(X):$(Y)" ./videos/$(FNAME)_score_board.mp4
 cut:
 	ffmpeg -ss $(FROM) -to $(TO) -i ./videos/$(FNAME).mp4 -map 0 -c:v copy ./videos/$(FNAME)_$(FROM)_$(TO).mp4
 rotate:
@@ -34,6 +38,8 @@ view_cls:
 	mkdir -p images/top
 	mkdir -p images/not_top
 	python3 view_cls.py ./videos/$(FNAME).mp4
+v_info:
+	python3 v_info.py videos/$(FNAME).mp4
 n_view:
 	python3 normal_view.py videos/$(FNAME).mp4
 pred:
@@ -83,6 +89,7 @@ score_log:
 read_score_log:
 	mkdir -p tmp/$(FNAME)
 	python3 read_score_log.py tmp/score_log.txt videos/$(FNAME).mp4
+	ffmpeg -f concat -safe 0 -i tmp/vid_list.txt -c copy videos/vid_merge.mp4
 train_banner:
 	python3 train_banner.py
 banner_view:
@@ -91,4 +98,4 @@ hide_banner:
 	python3 hide_banner.py videos/$(FNAME).mp4
 simple_hide_banner:
 	# python3 simple_hide_banner.py videos/$(FNAME).mp4
-	ffmpeg -i videos/$(FNAME).mp4 -filter_complex "[0:v]crop=1420:60:520:970,avgblur=20[fg];[0:v][fg]overlay=520:970[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy -movflags +faststart videos/hidden_banner.mp4
+	ffmpeg -i videos/$(FNAME).mp4 -filter_complex "[0:v]crop=1420:60:520:970,avgblur=20[fg];[0:v][fg]overlay=520:970[v]" -map "[v]" -map 0:a -c:v libx264 -c:a copy -movflags +faststart videos/$(FNAME)_hidden_banner.mp4
